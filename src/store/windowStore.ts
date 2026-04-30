@@ -30,13 +30,14 @@ const initialWindows = (): Record<AppId, WindowState> => {
   const result = {} as Record<AppId, WindowState>;
   const vw = typeof window !== 'undefined' ? window.innerWidth : 1280;
   const vh = typeof window !== 'undefined' ? window.innerHeight : 800;
-  // Two-column icon grid, anchored to the right edge
+  // Two-column icon grid, anchored to the right edge (macOS style)
   const col0X = vw - 90;   // right column
   const col1X = vw - 178;  // left column (84px gap)
 
+  const iconsPerCol = Math.ceil(APPS.length / 2); // fill right column 0–(n-1), then left
   APPS.forEach((app, index) => {
-    const col = index % 2;
-    const row = Math.floor(index / 2);
+    const col = Math.floor(index / iconsPerCol); // 0 = right column, 1 = left column
+    const row = index % iconsPerCol;
     const iconX = col === 0 ? col0X : col1X;
     const iconY = 48 + row * 90;
 

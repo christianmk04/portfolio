@@ -1,0 +1,176 @@
+/* ── Windows XP Taskbar ── */
+
+.xp-taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  z-index: 8000;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 2px;
+  background: linear-gradient(
+    to bottom,
+    #245EDC 0%,
+    #3d89f5 2%,
+    #2060d8 3%,
+    #1a54cc 4%,
+    #1a54cc 96%,
+    #1040a8 100%
+  );
+  border-top: 1px solid #0a30a0;
+  box-shadow: 0 -1px 0 #84a8e8 inset;
+  user-select: none;
+}
+
+/* ── Start Button ── */
+.xp-start-btn {
+  height: 26px;
+  padding: 0 12px 0 8px;
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(
+    to bottom,
+    #5ac63a 0%,
+    #44b22a 40%,
+    #359e1c 50%,
+    #44b22a 100%
+  );
+  border: 1px solid #1a7010;
+  border-left: none;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.4) inset,
+    1px 0 0 rgba(255,255,255,0.2) inset,
+    2px 2px 4px rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: Tahoma, Arial, sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 80, 0, 0.6);
+  letter-spacing: 0.02em;
+  transition: filter 0.1s ease;
+  margin-left: 0;
+}
+
+.xp-start-btn:hover {
+  filter: brightness(1.1);
+}
+
+.xp-start-btn:active {
+  filter: brightness(0.9);
+}
+
+.xp-start-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ── Taskbar App Buttons ── */
+.xp-taskbar-apps {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  overflow: hidden;
+  padding: 0 2px;
+}
+
+.xp-taskbar-btn {
+  height: 22px;
+  max-width: 160px;
+  min-width: 80px;
+  padding: 0 6px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to bottom,
+    #1e5cd8 0%,
+    #2d6ee8 40%,
+    #1a56cc 50%,
+    #2060d8 100%
+  );
+  border: 1px solid #0840a8;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.2) inset;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  font-family: Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: filter 0.08s ease;
+}
+
+.xp-taskbar-btn:hover {
+  filter: brightness(1.15);
+}
+
+.xp-taskbar-btn:active,
+.xp-taskbar-btn.active {
+  background: linear-gradient(
+    to bottom,
+    #1040a8 0%,
+    #1a54cc 40%,
+    #1040a8 100%
+  );
+  border-color: #0030a0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4) inset;
+}
+
+.xp-taskbar-btn-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.xp-taskbar-btn-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── System Tray ── */
+.xp-system-tray {
+  height: 26px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(
+    to bottom,
+    #1040b8 0%,
+    #0c38a8 50%,
+    #0c38a8 100%
+  );
+  border: 1px solid #0030a0;
+  border-radius: 2px;
+  box-shadow: -1px 0 0 rgba(255,255,255,0.1) inset;
+  flex-shrink: 0;
+  font-family: Tahoma, Arial, sans-serif;
+  font-size: 11px;
+  color: #fff;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.xp-tray-icon {
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.xp-tray-clock {
+  font-size: 11px;
+  color: #fff;
+  text-align: center;
+  line-height: 1.3;
+}

@@ -104,7 +104,7 @@ export default function StickyNote({ id, text, x, y, colorIndex }: Props) {
             padding: '8px 10px',
             fontSize: 12,
             lineHeight: 1.55,
-            fontFamily: "-apple-system, 'Inter', system-ui, sans-serif",
+            fontFamily: 'Tahoma, Arial, sans-serif',
             cursor: 'text',
             userSelect: 'text',
           }}

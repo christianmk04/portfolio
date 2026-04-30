@@ -57,7 +57,7 @@ export default function ReadMeApp() {
         }}
       >
         <Typography sx={{ fontSize: 28, mb: 0.5 }}>👋</Typography>
-        <Typography variant="h6" sx={{ fontWeight: 700, color: '#fff', mb: 0.5 }}>
+        <Typography variant="h6" sx={{ fontWeight: 700, color: '#fff', mb: 0.5, fontFamily: 'Tahoma, Arial, sans-serif' }}>
           Welcome to Christian's Portfolio
         </Typography>
         <Typography sx={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
@@ -71,12 +71,13 @@ export default function ReadMeApp() {
         <Box key={section.title}>
           <Typography
             sx={{
-              fontSize: 11,
+              fontSize: 10,
               fontWeight: 700,
               color: '#818cf8',
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
               mb: 1,
+              fontFamily: 'Tahoma, Arial, sans-serif',
             }}
           >
             {section.title}
@@ -85,7 +86,7 @@ export default function ReadMeApp() {
             sx={{
               background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.07)',
-              borderRadius: 2,
+              borderRadius: 1,
               overflow: 'hidden',
             }}
           >
@@ -97,17 +98,17 @@ export default function ReadMeApp() {
                   alignItems: 'center',
                   gap: 1.5,
                   px: 2,
-                  py: 1,
+                  py: 0.8,
                   borderBottom:
                     i < section.items.length - 1
                       ? '1px solid rgba(255,255,255,0.05)'
                       : 'none',
                 }}
               >
-                <span style={{ fontSize: 16, flexShrink: 0, width: 22, textAlign: 'center' }}>
+                <span style={{ fontSize: 15, flexShrink: 0, width: 22, textAlign: 'center' }}>
                   {item.icon}
                 </span>
-                <Typography sx={{ fontSize: 13, color: 'rgba(255,255,255,0.72)', lineHeight: 1.5 }}>
+                <Typography sx={{ fontSize: 12, color: 'rgba(255,255,255,0.72)', lineHeight: 1.5, fontFamily: 'Tahoma, Arial, sans-serif' }}>
                   {item.text}
                 </Typography>
               </Box>
@@ -118,10 +119,11 @@ export default function ReadMeApp() {
 
       <Typography
         sx={{
-          fontSize: 12,
+          fontSize: 11,
           color: 'rgba(255,255,255,0.25)',
           textAlign: 'center',
           mt: 0.5,
+          fontFamily: 'Tahoma, Arial, sans-serif',
         }}
       >
         Built with React · Vite · Material UI · Framer Motion

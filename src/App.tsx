@@ -1,29 +1,28 @@
 import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import BootScreen from './components/BootScreen/BootScreen';
+import { AnimatePresence } from 'framer-motion';
+import LockScreen from './components/LockScreen/LockScreen';
+import IOSLockScreen from './components/LockScreen/IOSLockScreen';
 import Desktop from './components/Desktop/Desktop';
+import IOSDesktop from './components/iOS/IOSDesktop';
+import { useIsMobile } from './hooks/useIsMobile';
 
 export default function App() {
-  const [hasBooted, setHasBooted] = useState(false);
+  const [locked, setLocked] = useState(true);
+  const isMobile = useIsMobile();
 
   return (
     <>
+      {/* Desktop pre-renders underneath — instant reveal on unlock */}
+      {isMobile ? <IOSDesktop /> : <Desktop />}
+
+      {/* Lock screen slides upward on unlock */}
       <AnimatePresence>
-        {!hasBooted && (
-          <BootScreen onComplete={() => setHasBooted(true)} />
+        {locked && (
+          isMobile
+            ? <IOSLockScreen onUnlock={() => setLocked(false)} />
+            : <LockScreen    onUnlock={() => setLocked(false)} />
         )}
       </AnimatePresence>
-
-      {hasBooted && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          style={{ position: 'fixed', inset: 0 }}
-        >
-          <Desktop />
-        </motion.div>
-      )}
     </>
   );
 }

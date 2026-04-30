@@ -1,0 +1,227 @@
+/* ── iOS-style layout ── */
+
+.ios-desktop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  transition: background 1s ease;
+}
+
+/* ── Status Bar ── */
+.ios-status-bar {
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px 0;
+  position: relative;
+  z-index: 100;
+}
+
+.ios-status-time {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+.ios-status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ios-status-icons span {
+  font-size: 13px;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── Home Screen Icon Grid ── */
+.ios-icon-grid {
+  flex: 1;
+  padding: 16px 16px 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px 8px;
+  align-content: start;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── App Icon ── */
+.ios-app-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.ios-app-icon-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;            /* iOS squircle */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.1s ease, opacity 0.1s ease;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.15) inset;
+}
+
+.ios-app-icon:active .ios-app-icon-img {
+  transform: scale(0.88);
+  opacity: 0.85;
+}
+
+.ios-app-icon-label {
+  font-size: 11px;
+  font-weight: 400;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.1px;
+}
+
+/* ── Dock ── */
+.ios-dock {
+  flex-shrink: 0;
+  margin: 0 12px 20px;
+  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.ios-dock .ios-app-icon-label {
+  display: none;
+}
+
+.ios-dock .ios-app-icon-img {
+  width: 56px;
+  height: 56px;
+}
+
+/* ── Full-screen App Window ── */
+.ios-window {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  background: #1c1c1e;
+  overflow: hidden;
+}
+
+.ios-window-nav {
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0 4px;
+  background: rgba(28, 28, 30, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+}
+
+.ios-window-back {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 10px;
+  cursor: pointer;
+  color: #0a84ff;
+  font-size: 17px;
+  font-weight: 400;
+  -webkit-tap-highlight-color: transparent;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.ios-window-back:active {
+  background: rgba(10, 132, 255, 0.15);
+}
+
+.ios-window-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 17px;
+  font-weight: 600;
+  color: #fff;
+  pointer-events: none;
+  white-space: nowrap;
+  letter-spacing: -0.3px;
+}
+
+.ios-window-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 16px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Thin scrollbar for iOS app content */
+.ios-window-content::-webkit-scrollbar {
+  width: 3px;
+}
+.ios-window-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+/* ── Shared home indicator ── */
+.ios-home-indicator {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ios-home-indicator-bar {
+  width: 130px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.35);
+  border-radius: 3px;
+}
+
+/* ── Mobile app content overrides ── */
+
+/* Ensure snake/minesweeper canvas container scrolls */
+@media (max-width: 767px) {
+  .ios-window-content canvas {
+    max-width: 100%;
+  }
+
+  /* Prevent horizontal overflow in terminal */
+  .ios-window-content pre,
+  .ios-window-content code {
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+}
