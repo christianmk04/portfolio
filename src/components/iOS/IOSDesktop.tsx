@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useState, useRef, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import { IOS_WALLPAPERS, useDesktopStore } from '../../store/desktopStore';
 import IOSStatusBar from './IOSStatusBar';
 import IOSWindow from './IOSWindow';
@@ -127,6 +127,13 @@ export default function IOSDesktop() {
   const wallpaperIndex = useDesktopStore((s) => s.iosWallpaperIndex);
   const cycleIOSWallpaper = useDesktopStore((s) => s.cycleIOSWallpaper);
   const swipeTouchRef = useRef<{ x: number; y: number } | null>(null);
+  const [showSwipeHint, setShowSwipeHint] = useState(true);
+
+  // Auto-dismiss the hint after 4 s
+  useEffect(() => {
+    const t = setTimeout(() => setShowSwipeHint(false), 4000);
+    return () => clearTimeout(t);
+  }, []);
 
   const handleOpenApp = (id: AppId) => setOpenAppId(id);
   const handleClose = () => setOpenAppId(null);
@@ -167,6 +174,55 @@ export default function IOSDesktop() {
         onClick={() => setShowNotifCenter(true)}
         style={{ cursor: 'pointer' }}
       />
+
+      {/* Swipe-down hint — fades in then out after 4 s, never shown again */}
+      <AnimatePresence>
+        {showSwipeHint && (
+          <motion.div
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            transition={{ duration: 0.5 }}
+            onClick={() => { setShowSwipeHint(false); setShowNotifCenter(true); }}
+            style={{
+              position: 'absolute',
+              top: 28,           // sits flush under the status bar
+              left: 0,
+              right: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+              pointerEvents: 'auto',
+              zIndex: 50,
+              cursor: 'pointer',
+              userSelect: 'none',
+            }}
+          >
+            {/* Pill bar — mirrors the home indicator at the bottom */}
+            <div style={{
+              width: 36, height: 4, borderRadius: 2,
+              background: 'rgba(255,255,255,0.55)',
+            }} />
+            {/* Bouncing chevron */}
+            <motion.div
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 1.1, repeat: 3, ease: 'easeInOut' }}
+              style={{ fontSize: 13, color: 'rgba(255,255,255,0.7)', lineHeight: 1 }}
+            >
+              ›
+            </motion.div>
+            <div style={{
+              fontSize: 10,
+              color: 'rgba(255,255,255,0.55)',
+              fontFamily: '-apple-system, sans-serif',
+              letterSpacing: '0.04em',
+            }}>
+              Swipe down
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Icon Grid — individual AppIcons stop propagation; grid itself lets background taps through */}
       <div className="ios-icon-grid">
