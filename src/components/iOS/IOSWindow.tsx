@@ -13,33 +13,23 @@ interface Props {
 
 export default function IOSWindow({ appId, children, onClose }: Props) {
   const appMeta = APPS.find((a) => a.id === appId)!;
-  const scrollRef = useRef<HTMLDivElement>(null);
   const swipeTouchRef = useRef<{ x: number; y: number } | null>(null);
 
-  const isScrolledToBottom = () => {
-    const el = scrollRef.current;
-    if (!el) return false;
-    // Content that doesn't overflow is always "at the bottom"
-    return el.scrollHeight <= el.clientHeight + 1 ||
-      el.scrollTop + el.clientHeight >= el.scrollHeight - 24;
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
+  // Swipe starts on the home indicator bar — no need to check scroll position
+  const handleBarTouchStart = (e: React.TouchEvent) => {
+    e.stopPropagation();
     const t = e.touches[0];
     swipeTouchRef.current = { x: t.clientX, y: t.clientY };
   };
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
+  const handleBarTouchEnd = (e: React.TouchEvent) => {
+    e.stopPropagation();
     if (!swipeTouchRef.current) return;
     const t = e.changedTouches[0];
     const dy = t.clientY - swipeTouchRef.current.y;
     swipeTouchRef.current = null;
-    // Swipe up ≥ 50px — only dismiss when already at the bottom of content
-    if (dy < -50 && isScrolledToBottom()) onClose();
-  };
-
-  const handleIndicatorClick = () => {
-    if (isScrolledToBottom()) onClose();
+    // Swipe up ≥ 40px from the bar dismisses the window
+    if (dy < -40) onClose();
   };
 
   return (
@@ -47,10 +37,8 @@ export default function IOSWindow({ appId, children, onClose }: Props) {
       className="ios-window"
       initial={{ y: '100%' }}
       animate={{ y: 0 }}
-      exit={{ y: '100%' }}
+      exit={{ y: '-100%' }}
       transition={{ type: 'spring', stiffness: 260, damping: 30 }}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
       {/* iOS status bar inside window */}
       <IOSStatusBar />
@@ -69,17 +57,19 @@ export default function IOSWindow({ appId, children, onClose }: Props) {
       </div>
 
       {/* Scrollable content */}
-      <div ref={scrollRef} className="ios-window-content">
+      <div className="ios-window-content">
         {children}
       </div>
 
-      {/* Home indicator — only closes when scrolled to bottom */}
-      <div className="ios-home-indicator">
-        <div
-          className="ios-home-indicator-bar"
-          onClick={handleIndicatorClick}
-          style={{ cursor: 'pointer' }}
-        />
+      {/* Home indicator — swipe up from here to dismiss */}
+      <div
+        className="ios-home-indicator"
+        onTouchStart={handleBarTouchStart}
+        onTouchEnd={handleBarTouchEnd}
+        onClick={onClose}
+        style={{ cursor: 'pointer' }}
+      >
+        <div className="ios-home-indicator-bar" />
       </div>
     </motion.div>
   );
