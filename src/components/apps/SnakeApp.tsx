@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Box, Typography } from '@mui/material';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const CELL = 15;
 const COLS = 20;
@@ -21,6 +22,7 @@ function randomFood(snake: Point[]): Point {
 }
 
 export default function SnakeApp() {
+  const isMobile = useIsMobile();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const snakeRef = useRef<Point[]>([{ x: 10, y: 10 }]);
   const dirRef = useRef<Dir>({ x: 1, y: 0 });
@@ -100,7 +102,7 @@ export default function SnakeApp() {
       ctx.fillText('GAME OVER', CANVAS_W / 2, CANVAS_H / 2 - 12);
       ctx.fillStyle = 'rgba(255,255,255,0.6)';
       ctx.font = '14px Inter, system-ui';
-      ctx.fillText('Press Space to restart', CANVAS_W / 2, CANVAS_H / 2 + 14);
+      ctx.fillText('Tap / Space to restart', CANVAS_W / 2, CANVAS_H / 2 + 14);
     }
   }, []);
 
@@ -252,9 +254,9 @@ export default function SnakeApp() {
       />
 
       <Typography sx={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', textAlign: 'center' }}>
-        {gameState === 'idle' && 'Press Space to start'}
-        {gameState === 'playing' && 'Arrow keys or WASD to move'}
-        {gameState === 'gameover' && 'Press Space to restart'}
+        {gameState === 'idle'     && (isMobile ? 'Tap the game to start'            : 'Press Space to start')}
+        {gameState === 'playing'  && (isMobile ? 'Swipe inside the game to move'    : 'Arrow keys or WASD to move')}
+        {gameState === 'gameover' && (isMobile ? 'Tap the game to restart'          : 'Press Space to restart')}
       </Typography>
     </Box>
   );

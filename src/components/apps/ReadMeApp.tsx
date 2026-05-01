@@ -220,10 +220,8 @@ function MobileReadMe() {
         title="📱 How to navigate"
         rows={[
           { icon: '👆', text: 'Tap any app to open it' },
-          { icon: '⬇️', text: 'Swipe down from the top for notifications' },
-          { icon: '🔔', text: 'Tap the status bar to open the notification centre' },
+          { icon: '⬇️', text: 'Swipe down from the top to open the notification centre' },
           { icon: '🖼', text: 'Tap empty space to change wallpaper' },
-          { icon: '📌', text: 'Long-press to flag in Minesweeper' },
         ]}
       />
 

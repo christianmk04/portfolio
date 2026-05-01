@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { IOS_WALLPAPERS, useDesktopStore } from '../../store/desktopStore';
 import IOSStatusBar from './IOSStatusBar';
@@ -30,7 +30,7 @@ const ICON_GRADIENTS: Partial<Record<AppId, string>> = {
   resume:           'linear-gradient(145deg, #ff375f 0%, #c4162a 100%)',
   finder:           'linear-gradient(145deg, #60a5fa, #3b82f6)',
   readme:           'linear-gradient(145deg, #5e5ce6 0%, #3634a3 100%)',
-  about:            'linear-gradient(145deg, #1a91ff 0%, #0055d4 100%)',
+  about:            'linear-gradient(145deg, #bf5af2 0%, #9b3dc8 100%)',
   experience:       'linear-gradient(145deg, #34c759 0%, #248a3d 100%)',
   projects:         'linear-gradient(145deg, #ff9f0a 0%, #b36200 100%)',
   skills:           'linear-gradient(145deg, #636366 0%, #3a3a3c 100%)',
@@ -126,9 +126,27 @@ export default function IOSDesktop() {
   const [showNotifCenter, setShowNotifCenter] = useState(false);
   const wallpaperIndex = useDesktopStore((s) => s.iosWallpaperIndex);
   const cycleIOSWallpaper = useDesktopStore((s) => s.cycleIOSWallpaper);
+  const swipeTouchRef = useRef<{ x: number; y: number } | null>(null);
 
   const handleOpenApp = (id: AppId) => setOpenAppId(id);
   const handleClose = () => setOpenAppId(null);
+
+  // Swipe-down from top 80px opens notification center
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    swipeTouchRef.current = { x: t.clientX, y: t.clientY };
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!swipeTouchRef.current) return;
+    const t = e.changedTouches[0];
+    const dy = t.clientY - swipeTouchRef.current.y;
+    const startY = swipeTouchRef.current.y;
+    swipeTouchRef.current = null;
+    // Only trigger if swipe started near the top and moved down ≥ 40px
+    if (startY < 80 && dy > 40) {
+      setShowNotifCenter(true);
+    }
+  };
 
   // Build grid from GRID_ORDER; dock from DOCK_APPS
   const gridApps = GRID_ORDER
@@ -141,6 +159,8 @@ export default function IOSDesktop() {
       className="ios-desktop"
       style={{ background: IOS_WALLPAPERS[wallpaperIndex] }}
       onClick={cycleIOSWallpaper}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Status Bar — tappable to open Notification Center */}
       <IOSStatusBar
