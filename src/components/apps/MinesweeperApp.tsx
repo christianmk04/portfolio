@@ -72,6 +72,8 @@ export default function MinesweeperApp() {
   const [flagCount, setFlagCount] = useState(0);
   const [timer, setTimer] = useState(0);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const longPressRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const longPressedRef = useRef(false);
 
   const reset = useCallback((diff: Difficulty = difficulty) => {
     const cfg = CONFIGS[diff];
@@ -196,6 +198,25 @@ export default function MinesweeperApp() {
                 key={`${r}-${c}`}
                 onClick={() => handleClick(r, c)}
                 onContextMenu={(e) => handleRightClick(e, r, c)}
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  longPressedRef.current = false;
+                  longPressRef.current = setTimeout(() => {
+                    longPressedRef.current = true;
+                    const fakeMouseEvent = { preventDefault: () => {} } as React.MouseEvent;
+                    handleRightClick(fakeMouseEvent, r, c);
+                  }, 500);
+                }}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  if (longPressRef.current) {
+                    clearTimeout(longPressRef.current);
+                    longPressRef.current = null;
+                  }
+                  if (!longPressedRef.current) {
+                    handleClick(r, c);
+                  }
+                }}
                 sx={{
                   width: cellSize, height: cellSize,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',

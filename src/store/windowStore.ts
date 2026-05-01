@@ -1,9 +1,13 @@
 import { create } from 'zustand';
-import { APPS } from '../data/content';
+import { APPS, VISIBLE_APPS } from '../data/content';
 
 export type AppId =
   | 'about' | 'experience' | 'projects' | 'skills' | 'publications' | 'contact'
-  | 'snake' | 'minesweeper' | 'terminal' | 'readme';
+  | 'snake' | 'minesweeper' | 'terminal' | 'readme'
+  | 'wordle' | 'mastermind' | 'flappybird' | 'twentyfortyeight'
+  | 'resume' | 'finder' | 'games'
+  | 'aboutmac' | 'preferences'
+  | 'imessage';
 
 interface WindowState {
   id: AppId;
@@ -24,6 +28,7 @@ interface WindowStore {
   bringToFront: (id: AppId) => void;
   updatePosition: (id: AppId, pos: { x: number; y: number }) => void;
   updateIconPosition: (id: AppId, pos: { x: number; y: number }) => void;
+  reinitializePositions: () => void;
 }
 
 const initialWindows = (): Record<AppId, WindowState> => {
@@ -34,17 +39,23 @@ const initialWindows = (): Record<AppId, WindowState> => {
   const col0X = vw - 90;   // right column
   const col1X = vw - 178;  // left column (84px gap)
 
-  const iconsPerCol = Math.ceil(APPS.length / 2); // fill right column 0–(n-1), then left
-  APPS.forEach((app, index) => {
-    const col = Math.floor(index / iconsPerCol); // 0 = right column, 1 = left column
+  // Build icon position map for visible (non-game) apps only
+  const iconsPerCol = Math.ceil(VISIBLE_APPS.length / 2);
+  const iconPositions: Partial<Record<AppId, { x: number; y: number }>> = {};
+  VISIBLE_APPS.forEach((app, index) => {
+    const col = Math.floor(index / iconsPerCol);
     const row = index % iconsPerCol;
-    const iconX = col === 0 ? col0X : col1X;
-    const iconY = 48 + row * 90;
+    iconPositions[app.id as AppId] = {
+      x: col === 0 ? col0X : col1X,
+      y: 48 + row * 90,
+    };
+  });
 
+  // ALL apps need window state (games are launched from the Games folder)
+  APPS.forEach((app) => {
     const isReadme = app.id === 'readme';
     result[app.id as AppId] = {
       id: app.id as AppId,
-      // readme opens automatically on first load, centred
       isOpen: isReadme,
       isMinimized: false,
       zIndex: isReadme ? 1001 : 1000,
@@ -52,7 +63,7 @@ const initialWindows = (): Record<AppId, WindowState> => {
         ? { x: Math.max(40, (vw - 500) / 2), y: Math.max(40, (vh - 560) / 2 - 20) }
         : { x: 0, y: 0 },
       hasBeenPositioned: isReadme,
-      iconPosition: { x: iconX, y: iconY },
+      iconPosition: iconPositions[app.id as AppId] ?? { x: -200, y: -200 }, // off-screen for hidden apps
     };
   });
   return result;
@@ -141,5 +152,26 @@ export const useWindowStore = create<WindowStore>((set, get) => ({
         [id]: { ...state.windows[id], iconPosition: pos },
       },
     }));
+  },
+
+  reinitializePositions: () => {
+    const vw = window.innerWidth;
+    const col0X = vw - 90;
+    const col1X = vw - 178;
+    const iconsPerCol = Math.ceil(VISIBLE_APPS.length / 2);
+    set((state) => {
+      const updated = { ...state.windows };
+      VISIBLE_APPS.forEach((app, index) => {
+        const col = Math.floor(index / iconsPerCol);
+        const row = index % iconsPerCol;
+        const iconX = col === 0 ? col0X : col1X;
+        const iconY = 48 + row * 90;
+        updated[app.id as AppId] = {
+          ...updated[app.id as AppId],
+          iconPosition: { x: iconX, y: iconY },
+        };
+      });
+      return { windows: updated };
+    });
   },
 }));

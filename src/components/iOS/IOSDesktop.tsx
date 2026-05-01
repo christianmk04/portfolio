@@ -3,6 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 import { IOS_WALLPAPERS, useDesktopStore } from '../../store/desktopStore';
 import IOSStatusBar from './IOSStatusBar';
 import IOSWindow from './IOSWindow';
+import IOSFolder from './IOSFolder';
+import IOSNotificationCenter from './IOSNotificationCenter';
 import AboutApp from '../apps/AboutApp';
 import ExperienceApp from '../apps/ExperienceApp';
 import ProjectsApp from '../apps/ProjectsApp';
@@ -11,42 +13,76 @@ import PublicationsApp from '../apps/PublicationsApp';
 import ContactApp from '../apps/ContactApp';
 import SnakeApp from '../apps/SnakeApp';
 import MinesweeperApp from '../apps/MinesweeperApp';
-import TerminalApp from '../apps/TerminalApp';
 import ReadMeApp from '../apps/ReadMeApp';
+import WordleApp from '../apps/WordleApp';
+import MastermindApp from '../apps/MastermindApp';
+import FlappyBirdApp from '../apps/FlappyBirdApp';
+import TwentyFortyEightApp from '../apps/TwentyFortyEightApp';
+import ResumeApp from '../apps/ResumeApp';
+import IMessageApp from './iMessageApp';
 import { APPS } from '../../data/content';
 import type { AppId } from '../../store/windowStore';
 import '../../styles/ios.css';
 
 // Icon gradient backgrounds per app (iOS-style colored icons)
-const ICON_GRADIENTS: Record<AppId, string> = {
-  readme:       'linear-gradient(145deg, #5ac8fa, #007aff)',
-  about:        'linear-gradient(145deg, #34aadc, #0d7fd6)',
-  experience:   'linear-gradient(145deg, #4cd964, #2ecc5a)',
-  projects:     'linear-gradient(145deg, #ff9500, #ff6b00)',
-  skills:       'linear-gradient(145deg, #8e8e93, #636366)',
-  publications: 'linear-gradient(145deg, #ff3b30, #cc2a22)',
-  contact:      'linear-gradient(145deg, #5ac8fa, #34aadc)',
-  snake:        'linear-gradient(145deg, #4cd964, #34b34a)',
-  minesweeper:  'linear-gradient(145deg, #ff9500, #d47f00)',
-  terminal:     'linear-gradient(145deg, #1c1c1e, #3a3a3c)',
+const ICON_GRADIENTS: Partial<Record<AppId, string>> = {
+  imessage: 'linear-gradient(145deg, #34c759 0%, #248a3d 100%)',
+  resume:           'linear-gradient(145deg, #ff375f 0%, #c4162a 100%)',
+  finder:           'linear-gradient(145deg, #60a5fa, #3b82f6)',
+  readme:           'linear-gradient(145deg, #5e5ce6 0%, #3634a3 100%)',
+  about:            'linear-gradient(145deg, #1a91ff 0%, #0055d4 100%)',
+  experience:       'linear-gradient(145deg, #34c759 0%, #248a3d 100%)',
+  projects:         'linear-gradient(145deg, #ff9f0a 0%, #b36200 100%)',
+  skills:           'linear-gradient(145deg, #636366 0%, #3a3a3c 100%)',
+  publications:     'linear-gradient(145deg, #ff6961 0%, #d63b32 100%)',
+  contact:          'linear-gradient(145deg, #64d2ff 0%, #0080ff 100%)',
+  snake:            'linear-gradient(145deg, #4cd964, #34b34a)',
+  minesweeper:      'linear-gradient(145deg, #ff9500, #d47f00)',
+  terminal:         'linear-gradient(145deg, #1c1c1e, #3a3a3c)',
+  wordle:           'linear-gradient(145deg, #538d4e, #3a6e36)',
+  mastermind:       'linear-gradient(145deg, #9b59b6, #7d3c98)',
+  flappybird:       'linear-gradient(145deg, #f1c40f, #d4ac0d)',
+  twentyfortyeight: 'linear-gradient(145deg, #e67e22, #ca6f1e)',
 };
 
-// Dock shows the 4 core portfolio apps
+// Grid order: all portfolio apps visible on home screen
+const GRID_ORDER: AppId[] = [
+  'about', 'experience', 'projects', 'skills',
+  'publications', 'contact', 'resume', 'readme',
+  'imessage',
+];
+
+// Dock: the four most important portfolio apps (also shown in grid above)
 const DOCK_APPS: AppId[] = ['about', 'experience', 'projects', 'contact'];
+
+// Arcade folder contents
+const ARCADE_APPS: { appId: AppId; icon: string; label: string }[] = [
+  { appId: 'snake',            icon: '🐍', label: 'Snake' },
+  { appId: 'minesweeper',      icon: '💣', label: 'Minesweeper' },
+  { appId: 'wordle',           icon: '🟩', label: 'Wordle' },
+  { appId: 'mastermind',       icon: '🎯', label: 'Mastermind' },
+  { appId: 'flappybird',       icon: '🐦', label: 'Flappy Bird' },
+  { appId: 'twentyfortyeight', icon: '🔢', label: '2048' },
+];
 
 function renderApp(appId: AppId) {
   switch (appId) {
-    case 'about':        return <AboutApp />;
-    case 'experience':   return <ExperienceApp />;
-    case 'projects':     return <ProjectsApp />;
-    case 'skills':       return <SkillsApp />;
-    case 'publications': return <PublicationsApp />;
-    case 'contact':      return <ContactApp />;
-    case 'snake':        return <SnakeApp />;
-    case 'minesweeper':  return <MinesweeperApp />;
-    case 'terminal':     return <TerminalApp />;
-    case 'readme':       return <ReadMeApp />;
-    default:             return null;
+    case 'about':            return <AboutApp />;
+    case 'experience':       return <ExperienceApp />;
+    case 'projects':         return <ProjectsApp />;
+    case 'skills':           return <SkillsApp />;
+    case 'publications':     return <PublicationsApp />;
+    case 'contact':          return <ContactApp />;
+    case 'snake':            return <SnakeApp />;
+    case 'minesweeper':      return <MinesweeperApp />;
+    case 'readme':           return <ReadMeApp />;
+    case 'wordle':           return <WordleApp />;
+    case 'mastermind':       return <MastermindApp />;
+    case 'flappybird':       return <FlappyBirdApp />;
+    case 'twentyfortyeight': return <TwentyFortyEightApp />;
+    case 'resume':           return <ResumeApp />;
+    case 'imessage':         return <IMessageApp />;
+    default:                 return null;
   }
 }
 
@@ -64,7 +100,10 @@ function AppIcon({ appId, icon, label, onOpen, small }: AppIconProps) {
   const radius = small ? 13 : 14;
 
   return (
-    <div className="ios-app-icon" onClick={() => onOpen(appId)}>
+    <div
+      className="ios-app-icon"
+      onClick={(e) => { e.stopPropagation(); onOpen(appId); }}
+    >
       <div
         className="ios-app-icon-img"
         style={{
@@ -84,25 +123,32 @@ function AppIcon({ appId, icon, label, onOpen, small }: AppIconProps) {
 
 export default function IOSDesktop() {
   const [openAppId, setOpenAppId] = useState<AppId | null>(null);
+  const [showNotifCenter, setShowNotifCenter] = useState(false);
   const wallpaperIndex = useDesktopStore((s) => s.iosWallpaperIndex);
   const cycleIOSWallpaper = useDesktopStore((s) => s.cycleIOSWallpaper);
 
   const handleOpenApp = (id: AppId) => setOpenAppId(id);
   const handleClose = () => setOpenAppId(null);
 
-  // Separate dock apps from grid apps (don't show dock apps twice)
-  const gridApps = APPS.filter((a) => !DOCK_APPS.includes(a.id as AppId));
+  // Build grid from GRID_ORDER; dock from DOCK_APPS
+  const gridApps = GRID_ORDER
+    .map((id) => APPS.find((a) => a.id === id))
+    .filter(Boolean) as typeof APPS[number][];
   const dockApps = APPS.filter((a) => DOCK_APPS.includes(a.id as AppId));
 
   return (
     <div
       className="ios-desktop"
       style={{ background: IOS_WALLPAPERS[wallpaperIndex] }}
+      onClick={cycleIOSWallpaper}
     >
-      {/* Status Bar */}
-      <IOSStatusBar />
+      {/* Status Bar — tappable to open Notification Center */}
+      <IOSStatusBar
+        onClick={() => setShowNotifCenter(true)}
+        style={{ cursor: 'pointer' }}
+      />
 
-      {/* Icon Grid */}
+      {/* Icon Grid — individual AppIcons stop propagation; grid itself lets background taps through */}
       <div className="ios-icon-grid">
         {gridApps.map((app) => (
           <AppIcon
@@ -113,25 +159,30 @@ export default function IOSDesktop() {
             onOpen={handleOpenApp}
           />
         ))}
+        {/* Arcade folder as regular grid item */}
+        <IOSFolder
+          label="Arcade"
+          apps={ARCADE_APPS}
+          onOpenApp={handleOpenApp}
+        />
       </div>
 
-      {/* Wallpaper switcher — tap to cycle */}
+      {/* Wallpaper hint */}
       <div
-        onClick={cycleIOSWallpaper}
         style={{
           textAlign: 'center',
           paddingBottom: 4,
           fontSize: 11,
-          color: 'rgba(255,255,255,0.35)',
+          color: 'rgba(255,255,255,0.30)',
           fontFamily: '-apple-system, sans-serif',
-          cursor: 'pointer',
           userSelect: 'none',
+          pointerEvents: 'none',
         }}
       >
-        Tap to change wallpaper
+        Tap background to change wallpaper
       </div>
 
-      {/* Dock */}
+      {/* Dock — individual AppIcons stop propagation */}
       <div className="ios-dock">
         {dockApps.map((app) => (
           <AppIcon
@@ -149,6 +200,13 @@ export default function IOSDesktop() {
       <div className="ios-home-indicator">
         <div className="ios-home-indicator-bar" />
       </div>
+
+      {/* Notification Center */}
+      <AnimatePresence>
+        {showNotifCenter && (
+          <IOSNotificationCenter onClose={() => setShowNotifCenter(false)} />
+        )}
+      </AnimatePresence>
 
       {/* Full-screen app window */}
       <AnimatePresence>

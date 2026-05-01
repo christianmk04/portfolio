@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 interface Props {
   /** When true the status bar text/icons render white (default). False = dark. */
   light?: boolean;
+  onClick?: () => void;
+  style?: React.CSSProperties;
 }
 
 function formatIOSTime(d: Date): string {
@@ -10,7 +12,7 @@ function formatIOSTime(d: Date): string {
     .replace(' AM', '').replace(' PM', '');
 }
 
-export default function IOSStatusBar({ light = true }: Props) {
+export default function IOSStatusBar({ light = true, onClick, style }: Props) {
   const [time, setTime] = useState(() => formatIOSTime(new Date()));
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export default function IOSStatusBar({ light = true }: Props) {
   const color = light ? '#fff' : '#000';
 
   return (
-    <div className="ios-status-bar">
+    <div className="ios-status-bar" onClick={onClick} style={style}>
       <span className="ios-status-time" style={{ color }}>{time}</span>
 
       <div className="ios-status-icons">

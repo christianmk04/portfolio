@@ -7,21 +7,21 @@ import IOSDesktop from './components/iOS/IOSDesktop';
 import { useIsMobile } from './hooks/useIsMobile';
 
 export default function App() {
-  const [locked, setLocked] = useState(true);
+  const [macLocked, setMacLocked] = useState(true);
+  const [iosLocked, setIosLocked] = useState(true);
   const isMobile = useIsMobile();
 
   return (
     <>
-      {/* Desktop pre-renders underneath — instant reveal on unlock */}
+      {/* Both desktops pre-render; only the active one is visible */}
       {isMobile ? <IOSDesktop /> : <Desktop />}
 
-      {/* Lock screen slides upward on unlock */}
+      {/* Lock screen sits on top, slides up on unlock */}
       <AnimatePresence>
-        {locked && (
-          isMobile
-            ? <IOSLockScreen onUnlock={() => setLocked(false)} />
-            : <LockScreen    onUnlock={() => setLocked(false)} />
-        )}
+        {isMobile
+          ? iosLocked && <IOSLockScreen key="ios-lock" onUnlock={() => setIosLocked(false)} />
+          : macLocked && <LockScreen    key="mac-lock" onUnlock={() => setMacLocked(false)} />
+        }
       </AnimatePresence>
     </>
   );

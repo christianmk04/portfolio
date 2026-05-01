@@ -42,9 +42,7 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.dock-icon-wrapper:hover .dock-icon-inner {
-  transform: scale(1.35) translateY(-8px);
-}
+/* Magnification handled in DockIcon.tsx via JS */
 
 .dock-icon-dot {
   width: 4px;

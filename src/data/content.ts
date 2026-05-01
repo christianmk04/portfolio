@@ -1,19 +1,38 @@
 export type AppId =
   | 'about' | 'experience' | 'projects' | 'skills' | 'publications' | 'contact'
-  | 'snake' | 'minesweeper' | 'terminal' | 'readme';
+  | 'snake' | 'minesweeper' | 'terminal' | 'readme'
+  | 'wordle' | 'mastermind' | 'flappybird' | 'twentyfortyeight'
+  | 'resume' | 'finder' | 'games'
+  | 'aboutmac' | 'preferences'
+  | 'imessage';
 
 export const APPS = [
-  { id: 'readme',       label: 'Read Me First', icon: '📖', defaultSize: { width: 500, height: 560 } },
-  { id: 'about',        label: 'About',        icon: '👤', defaultSize: { width: 560, height: 520 } },
-  { id: 'experience',   label: 'Experience',   icon: '💼', defaultSize: { width: 640, height: 600 } },
-  { id: 'projects',     label: 'Projects',     icon: '🚀', defaultSize: { width: 680, height: 580 } },
-  { id: 'skills',       label: 'Skills',       icon: '⚡', defaultSize: { width: 520, height: 500 } },
-  { id: 'publications', label: 'Publications', icon: '📄', defaultSize: { width: 580, height: 400 } },
-  { id: 'contact',      label: 'Contact',      icon: '✉️', defaultSize: { width: 460, height: 360 } },
-  { id: 'snake',        label: 'Snake',        icon: '🐍', defaultSize: { width: 380, height: 460 } },
-  { id: 'minesweeper',  label: 'Minesweeper',  icon: '💣', defaultSize: { width: 360, height: 440 } },
-  { id: 'terminal',     label: 'Terminal',     icon: '💻', defaultSize: { width: 580, height: 420 } },
+  { id: 'readme',           label: 'Read Me First', icon: '📖', defaultSize: { width: 460, height: 380 }, desktopOnly: false },
+  { id: 'about',            label: 'About',         icon: '👤', defaultSize: { width: 500, height: 380 }, desktopOnly: false },
+  { id: 'experience',       label: 'Experience',    icon: '💼', defaultSize: { width: 560, height: 400 }, desktopOnly: false },
+  { id: 'projects',         label: 'Projects',      icon: '🚀', defaultSize: { width: 560, height: 400 }, desktopOnly: false },
+  { id: 'skills',           label: 'Skills',        icon: '⚡', defaultSize: { width: 480, height: 360 }, desktopOnly: false },
+  { id: 'publications',     label: 'Publications',  icon: '📄', defaultSize: { width: 500, height: 300 }, desktopOnly: false },
+  { id: 'contact',          label: 'Contact',       icon: '✉️', defaultSize: { width: 420, height: 280 }, desktopOnly: false },
+  { id: 'resume',           label: 'Resume',        icon: '📋', defaultSize: { width: 500, height: 420 }, desktopOnly: false },
+  { id: 'finder',           label: 'Finder',        icon: '🗂',  defaultSize: { width: 600, height: 400 }, desktopOnly: false },
+  { id: 'terminal',         label: 'Terminal',      icon: '💻', defaultSize: { width: 520, height: 360 }, desktopOnly: false },
+  { id: 'games',            label: 'Games',         icon: '🎮', defaultSize: { width: 460, height: 380 }, desktopOnly: false },
+  { id: 'aboutmac',    label: 'About This Mac',      icon: '🍎', defaultSize: { width: 420, height: 320 }, desktopOnly: false },
+  { id: 'preferences', label: 'System Preferences',   icon: '⚙️', defaultSize: { width: 480, height: 380 }, desktopOnly: false },
+  // Games — launched from Games folder, hidden from desktop icons & dock
+  { id: 'snake',            label: 'Snake',         icon: '🐍', defaultSize: { width: 360, height: 420 }, desktopOnly: true },
+  { id: 'minesweeper',      label: 'Minesweeper',   icon: '💣', defaultSize: { width: 340, height: 400 }, desktopOnly: true },
+  { id: 'wordle',           label: 'Wordle',        icon: '🟩', defaultSize: { width: 400, height: 520 }, desktopOnly: true },
+  { id: 'mastermind',       label: 'Mastermind',    icon: '🎯', defaultSize: { width: 360, height: 480 }, desktopOnly: true },
+  { id: 'flappybird',       label: 'Flappy Bird',   icon: '🐦', defaultSize: { width: 360, height: 520 }, desktopOnly: true },
+  { id: 'twentyfortyeight', label: '2048',          icon: '🔢', defaultSize: { width: 360, height: 440 }, desktopOnly: true },
+  // iOS-only apps
+  { id: 'imessage',         label: 'Messages',      icon: '💬', defaultSize: { width: 400, height: 500 }, desktopOnly: true },
 ] as const;
+
+/** Apps that appear as icons on the desktop and in the dock */
+export const VISIBLE_APPS = APPS.filter((a) => !a.desktopOnly);
 
 export interface Internship {
   company: string;
@@ -55,7 +74,7 @@ export const INTERNSHIPS: Internship[] = [
     tags: ['Python', 'Flask', 'RAG', 'Telegram Bot', 'GenAI'],
   },
   {
-    company: 'Singapore Management University — SCIS',
+    company: 'Singapore Management University (SCIS)',
     role: 'Research Software Engineer (LLM) Intern',
     period: 'May 2024 – Aug 2024',
     bullets: [
@@ -75,7 +94,7 @@ export const INTERNSHIPS: Internship[] = [
     tags: ['RAG', 'Web Scraping', 'NLP', 'Python', 'AI'],
   },
   {
-    company: 'Singapore Management University — SCIS',
+    company: 'Singapore Management University (SCIS)',
     role: 'Research Software Engineer (GenAI) Intern',
     period: 'May 2023 – Aug 2023',
     bullets: [
@@ -156,5 +175,5 @@ export const CONTACT = {
   email: '04christiankoh@gmail.com',
   linkedin: 'https://www.linkedin.com/in/04christiankoh/',
   phone: '+65 9732 7232',
-  github: 'https://github.com/04christiankoh',
+  github: 'https://github.com/christianmk04',
 };

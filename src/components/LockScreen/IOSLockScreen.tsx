@@ -181,80 +181,102 @@ export default function IOSLockScreen({ onUnlock }: Props) {
       {/* ── Spacer ── */}
       <div style={{ flex: 1 }} />
 
-      {/* ── Central About Me widget ── */}
+      {/* ── Notification-style About Me bubble ── */}
       <motion.div
-        initial={{ opacity: 0, y: 20, scale: 0.96 }}
+        initial={{ opacity: 0, y: 20, scale: 0.94 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ delay: 0.35, duration: 0.75, ease: 'easeOut' }}
         style={{
           position: 'relative',
-          margin: '0 20px 20px',
-          padding: '16px 18px',
-          borderRadius: 20,
-          background: 'rgba(255,255,255,0.14)',
-          backdropFilter: 'blur(28px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(28px) saturate(180%)',
-          border: '1px solid rgba(255,255,255,0.22)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.28)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: 14,
+          margin: '0 16px 20px',
+          padding: '12px 14px',
+          borderRadius: 18,
+          background: 'rgba(30,30,35,0.72)',
+          backdropFilter: 'blur(32px) saturate(200%)',
+          WebkitBackdropFilter: 'blur(32px) saturate(200%)',
+          border: '1px solid rgba(255,255,255,0.14)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.38)',
         }}
-        onClick={(e) => e.stopPropagation()} // don't trigger unlock on widget tap
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Profile photo */}
+        {/* Notification header row */}
         <div
           style={{
-            width: 56,
-            height: 56,
-            borderRadius: '50%',
-            background: 'linear-gradient(145deg, #6366f1 0%, #818cf8 45%, #4f46e5 100%)',
-            flexShrink: 0,
-            overflow: 'hidden',
-            border: '2px solid rgba(255,255,255,0.35)',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 24,
+            gap: 8,
+            marginBottom: 7,
           }}
         >
-          {imgFailed ? (
-            <span>👨‍💻</span>
-          ) : (
-            <img
-              src="/profile.jpg"
-              alt="Christian"
-              onError={() => setImgFailed(true)}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            />
-          )}
+          {/* App icon (profile photo) */}
+          <div
+            style={{
+              width: 28,
+              height: 28,
+              borderRadius: 8,
+              background: 'linear-gradient(145deg, #6366f1 0%, #818cf8 45%, #4f46e5 100%)',
+              overflow: 'hidden',
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 14,
+            }}
+          >
+            {imgFailed ? (
+              <span>👨‍💻</span>
+            ) : (
+              <img
+                src="/profile.jpg"
+                alt="Christian"
+                onError={() => setImgFailed(true)}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            )}
+          </div>
+          <span
+            style={{
+              fontSize: 12,
+              fontWeight: 600,
+              color: 'rgba(255,255,255,0.55)',
+              letterSpacing: '0.03em',
+              textTransform: 'uppercase',
+              flex: 1,
+            }}
+          >
+            Portfolio
+          </span>
+          <span
+            style={{
+              fontSize: 12,
+              color: 'rgba(255,255,255,0.35)',
+            }}
+          >
+            now
+          </span>
         </div>
 
-        {/* Bio text */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div
-            style={{
-              fontSize: 15,
-              fontWeight: 600,
-              color: 'rgba(255,255,255,0.96)',
-              letterSpacing: '-0.01em',
-              marginBottom: 3,
-            }}
-          >
-            Christian Michael Koh
-          </div>
-          <div
-            style={{
-              fontSize: 12.5,
-              fontWeight: 400,
-              color: 'rgba(255,255,255,0.72)',
-              lineHeight: 1.45,
-              letterSpacing: '0.005em',
-            }}
-          >
-            SMU Information Systems · GPA 3.96{'\n'}
-            AI/ML Engineer · 6 internships across fintech, healthcare & defense
-          </div>
+        {/* Message content */}
+        <div
+          style={{
+            fontSize: 14.5,
+            fontWeight: 600,
+            color: 'rgba(255,255,255,0.95)',
+            marginBottom: 3,
+            letterSpacing: '-0.01em',
+          }}
+        >
+          Hi, I'm Christian 👋
+        </div>
+        <div
+          style={{
+            fontSize: 13,
+            fontWeight: 400,
+            color: 'rgba(255,255,255,0.65)',
+            lineHeight: 1.5,
+          }}
+        >
+          SMU Information Systems student passionate about AI and building things that matter. Explore my portfolio inside.
         </div>
       </motion.div>
 

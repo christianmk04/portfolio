@@ -155,7 +155,7 @@ export default function StartMenu({ onClose }: Props) {
 
           {/* Links */}
           {[
-            { icon: '🐙', label: 'GitHub', url: 'https://github.com/04christiankoh' },
+            { icon: '🐙', label: 'GitHub', url: 'https://github.com/christianmk04' },
             { icon: '💼', label: 'LinkedIn', url: 'https://www.linkedin.com/in/04christiankoh/' },
           ].map((link) => (
             <a

@@ -1,8 +1,62 @@
+import { useState } from 'react';
 import { Box, Typography, Chip } from '@mui/material';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { PROJECTS } from '../../data/content';
 
 const cardAccents = ['#818cf8', '#34d399', '#38bdf8'];
+
+// Map project names to banner images in /public/logos/
+const PROJECT_IMAGES: Record<string, string> = {
+  'ScamWise':             '/logos/scamwise.png',
+  'SUTD What The Hack':   '/logos/whatthehack.png',
+  'DomesticAID':          '/logos/domesticaid.png',
+};
+
+function getProjectImage(name: string): string | null {
+  for (const [key, src] of Object.entries(PROJECT_IMAGES)) {
+    if (name.includes(key)) return src;
+  }
+  return null;
+}
+
+function ProjectBanner({ name, accent }: { name: string; accent: string }) {
+  const [failed, setFailed] = useState(false);
+  const src = getProjectImage(name);
+
+  if (!src || failed) return null;
+
+  return (
+    <Box
+      sx={{
+        height: 160,
+        mt: -2.5,
+        mx: -2.5,
+        mb: 2,
+        width: 'calc(100% + 40px)',
+        overflow: 'hidden',
+        borderRadius: '6px 6px 0 0',
+        borderBottom: `1px solid ${accent}20`,
+        background: 'rgba(0,0,0,0.35)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Box
+        component="img"
+        src={src}
+        alt={name}
+        onError={() => setFailed(true)}
+        sx={{
+          maxWidth: '100%',
+          maxHeight: '100%',
+          objectFit: 'contain',
+          display: 'block',
+        }}
+      />
+    </Box>
+  );
+}
 
 export default function ProjectsApp() {
   return (
@@ -16,12 +70,15 @@ export default function ProjectsApp() {
             borderLeft: `3px solid ${cardAccents[i % cardAccents.length]}`,
             borderRadius: 2,
             p: 2.5,
+            overflow: 'hidden',
             transition: 'background 0.2s ease',
             '&:hover': {
               background: 'rgba(255,255,255,0.06)',
             },
           }}
         >
+          <ProjectBanner name={project.name} accent={cardAccents[i % cardAccents.length]} />
+
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 0.5 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography sx={{ fontWeight: 700, fontSize: 15, color: '#fff' }}>

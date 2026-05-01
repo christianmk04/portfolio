@@ -84,6 +84,13 @@ export const IOS_WALLPAPERS = [
    linear-gradient(160deg, #0f0a00 0%, #180e00 100%)`,
 ];
 
+// Badge counts for specific apps
+export const BADGE_COUNTS: Partial<Record<string, number>> = {
+  experience: 6,
+  projects: 3,
+  publications: 1,
+};
+
 interface DesktopStore {
   wallpaperIndex: number;
   cycleWallpaper: () => void;
@@ -103,6 +110,23 @@ interface DesktopStore {
 
   openedApps: Set<string>;
   markOpened: (id: string) => void;
+
+  // Badge dismissal
+  dismissedBadges: Set<string>;
+  dismissBadge: (id: string) => void;
+
+  // Mission Control
+  missionControlActive: boolean;
+  toggleMissionControl: () => void;
+  exitMissionControl: () => void;
+
+  // Appearance / accent mode
+  accentMode: 'dark' | 'light';
+  toggleAccentMode: () => void;
+
+  // Personality mode for now-playing widget
+  personalityMode: 'coffee' | 'debug';
+  togglePersonalityMode: () => void;
 }
 
 let noteColorCounter = 0;
@@ -150,4 +174,21 @@ export const useDesktopStore = create<DesktopStore>((set, get) => ({
   openedApps: new Set(),
   markOpened: (id) =>
     set((s) => ({ openedApps: new Set([...s.openedApps, id]) })),
+
+  dismissedBadges: new Set(),
+  dismissBadge: (id) =>
+    set((s) => ({ dismissedBadges: new Set([...s.dismissedBadges, id]) })),
+
+  missionControlActive: false,
+  toggleMissionControl: () =>
+    set((s) => ({ missionControlActive: !s.missionControlActive })),
+  exitMissionControl: () => set({ missionControlActive: false }),
+
+  accentMode: 'dark',
+  toggleAccentMode: () =>
+    set((s) => ({ accentMode: s.accentMode === 'dark' ? 'light' : 'dark' })),
+
+  personalityMode: 'coffee',
+  togglePersonalityMode: () =>
+    set((s) => ({ personalityMode: s.personalityMode === 'coffee' ? 'debug' : 'coffee' })),
 }));

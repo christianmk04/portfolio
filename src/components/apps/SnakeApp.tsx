@@ -30,6 +30,8 @@ export default function SnakeApp() {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const scoreRef = useRef(0);
 
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
   const [displayScore, setDisplayScore] = useState(0);
   const [gameState, setGameState] = useState<GameState>('idle');
   const [hiScore, setHiScore] = useState(() => {
@@ -188,8 +190,44 @@ export default function SnakeApp() {
       nextDirRef.current = next;
     };
     window.addEventListener('keydown', handleKey);
+
+    const canvas = canvasRef.current;
+    const handleTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+      const t = e.touches[0];
+      touchStartRef.current = { x: t.clientX, y: t.clientY };
+      if (gameStateRef.current !== 'playing') startGame();
+    };
+    const handleTouchEnd = (e: TouchEvent) => {
+      e.preventDefault();
+      if (!touchStartRef.current) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStartRef.current.x;
+      const dy = t.clientY - touchStartRef.current.y;
+      touchStartRef.current = null;
+      if (Math.abs(dx) < 15 && Math.abs(dy) < 15) return;
+      if (gameStateRef.current !== 'playing') return;
+      const dir = dirRef.current;
+      let next: Dir;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        next = dx > 0 ? { x: 1, y: 0 } : { x: -1, y: 0 };
+      } else {
+        next = dy > 0 ? { x: 0, y: 1 } : { x: 0, y: -1 };
+      }
+      if (next.x === -dir.x && next.y === -dir.y) return;
+      nextDirRef.current = next;
+    };
+    if (canvas) {
+      canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
+      canvas.addEventListener('touchend', handleTouchEnd, { passive: false });
+    }
+
     return () => {
       window.removeEventListener('keydown', handleKey);
+      if (canvas) {
+        canvas.removeEventListener('touchstart', handleTouchStart);
+        canvas.removeEventListener('touchend', handleTouchEnd);
+      }
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [draw, startGame]);

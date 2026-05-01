@@ -17,7 +17,7 @@ const JOKES = [
   "Why do programmers prefer dark mode? Because light attracts bugs.",
   "A SQL query walks into a bar, walks up to two tables and asks... 'Can I join you?'",
   "Why do Java developers wear glasses? Because they don't C#.",
-  "How many programmers does it take to change a light bulb? None — that's a hardware problem.",
+  "How many programmers does it take to change a light bulb? None, that's a hardware problem.",
   "I would tell you a joke about UDP... but you might not get it.",
   "To understand recursion, you must first understand recursion.",
 ];
@@ -81,15 +81,16 @@ export default function TerminalApp() {
       case 'help':
         addLines([
           { text: 'Available commands:', type: 'output' },
-          { text: '  help          — show this help', type: 'output' },
-          { text: '  whoami        — about Christian', type: 'output' },
-          { text: '  ls            — list files', type: 'output' },
-          { text: '  cat resume.pdf — print resume summary', type: 'output' },
-          { text: '  open <app>    — open an app (about, experience, projects, skills,', type: 'output' },
-          { text: '                  publications, contact, snake, minesweeper)', type: 'output' },
-          { text: '  matrix        — 👀', type: 'output' },
-          { text: '  joke          — random dev joke', type: 'output' },
-          { text: '  clear         — clear terminal', type: 'output' },
+          { text: '  help           show this help', type: 'output' },
+          { text: '  whoami         about Christian', type: 'output' },
+          { text: '  ls             list files', type: 'output' },
+          { text: '  cat resume.pdf print resume summary', type: 'output' },
+          { text: '  open <app>     open an app (about, experience, projects, skills,', type: 'output' },
+          { text: '                 publications, contact, snake, minesweeper,', type: 'output' },
+          { text: '                 wordle, mastermind, flappybird, twentyfortyeight)', type: 'output' },
+          { text: '  matrix         👀', type: 'output' },
+          { text: '  joke           random dev joke', type: 'output' },
+          { text: '  clear          clear terminal', type: 'output' },
           { text: '', type: 'output' },
         ]);
         break;
@@ -97,7 +98,7 @@ export default function TerminalApp() {
       case 'whoami':
         addLines([
           { text: 'Christian Michael Koh', type: 'output' },
-          { text: 'B.Sc. Information Systems — Singapore Management University', type: 'output' },
+          { text: 'B.Sc. Information Systems, Singapore Management University', type: 'output' },
           { text: 'GPA: 3.96/4.00 (Summa Cum Laude)', type: 'output' },
           { text: 'Focus: AI/ML · Full Stack · Cloud & DevOps', type: 'output' },
           { text: 'Email: 04christiankoh@gmail.com', type: 'output' },
@@ -168,7 +169,8 @@ export default function TerminalApp() {
         } else {
           addLines([
             { text: `open: app not found: ${appName ?? ''}`, type: 'error' },
-            { text: 'Try: about, experience, projects, skills, publications, contact, snake, minesweeper', type: 'output' },
+            { text: 'Try: about, experience, projects, skills, publications, contact,', type: 'output' },
+            { text: '     snake, minesweeper, terminal, wordle, mastermind, flappybird, twentyfortyeight', type: 'output' },
           ]);
         }
         break;
@@ -194,7 +196,7 @@ export default function TerminalApp() {
         if (raw.trim() === 'sudo rm -rf /') {
           addLines([{ text: 'Nice try 😏', type: 'error' }]);
         } else {
-          addLines([{ text: 'Permission denied — this portfolio is read-only.', type: 'error' }]);
+          addLines([{ text: 'Permission denied: this portfolio is read-only.', type: 'error' }]);
         }
         break;
 

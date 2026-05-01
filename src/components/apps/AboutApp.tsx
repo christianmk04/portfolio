@@ -56,8 +56,8 @@ export default function AboutApp() {
       >
         <Typography sx={{ fontSize: 14, lineHeight: 1.7, color: 'rgba(255,255,255,0.75)' }}>
           Hi! I'm a final-year Information Systems student at SMU passionate about AI, full-stack development,
-          and building things that matter. I've worked across government agencies, research labs, and startups — always
-          at the intersection of AI and software engineering. I love turning complex problems into elegant, practical solutions.
+          and building things that matter. I've worked across government agencies, research labs, and startups,
+          always at the intersection of AI and software engineering. I love turning complex problems into elegant, practical solutions.
         </Typography>
       </Box>
 
@@ -86,17 +86,17 @@ export default function AboutApp() {
             </Typography>
           </Box>
           <Typography sx={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', mb: 1.5 }}>
-            Singapore Management University — School of Computing & Information Systems
+            Singapore Management University, School of Computing & Information Systems
           </Typography>
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
             <Chip
               icon={<EmojiEventsIcon sx={{ fontSize: '14px !important' }} />}
-              label="GPA 3.96 / 4.00 — Summa Cum Laude"
+              label="GPA 3.96 / 4.00 · Summa Cum Laude"
               size="small"
               sx={{ background: 'rgba(251,191,36,0.15)', color: '#fcd34d', border: '1px solid rgba(251,191,36,0.3)', fontSize: 11 }}
             />
             <Chip
-              label="Dean's List — All Applicable Years"
+              label="Dean's List · All Applicable Years"
               size="small"
               sx={{ background: 'rgba(251,191,36,0.1)', color: '#fcd34d', border: '1px solid rgba(251,191,36,0.2)', fontSize: 11 }}
             />
