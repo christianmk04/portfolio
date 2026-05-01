@@ -272,8 +272,31 @@ export default function IOSDesktop() {
         ))}
       </div>
 
-      {/* Home indicator */}
-      <div className="ios-home-indicator">
+      {/* Home indicator — swipe up opens Contact */}
+      <div
+        className="ios-home-indicator"
+        style={{ cursor: 'pointer' }}
+        onTouchStart={(e) => {
+          const t = e.touches[0];
+          swipeTouchRef.current = { x: t.clientX, y: t.clientY };
+        }}
+        onTouchEnd={(e) => {
+          if (!swipeTouchRef.current) return;
+          const t = e.changedTouches[0];
+          const dy = t.clientY - swipeTouchRef.current.y;
+          swipeTouchRef.current = null;
+          if (dy < -30) {
+            e.stopPropagation();
+            handleOpenApp('contact');
+          }
+        }}
+        onClick={(e) => {
+          // Also open Contact on tap for desktop testing
+          e.stopPropagation();
+          handleOpenApp('contact');
+        }}
+        title="Open Contact"
+      >
         <div className="ios-home-indicator-bar" />
       </div>
 

@@ -372,6 +372,7 @@ function LeetCodeWidget() {
 // ---- Main Component ----
 export default function IOSNotificationCenter({ onClose }: Props) {
   const [now, setNow] = useState(new Date());
+  const swipeTouchRef = useRef<{ x: number; y: number } | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   // iframeAutoplay controls the ?autoplay= param baked into the src.
@@ -425,12 +426,27 @@ export default function IOSNotificationCenter({ onClose }: Props) {
     if (wasPlaying) setTimeout(() => setIsPlaying(true), 600);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const t = e.touches[0];
+    swipeTouchRef.current = { x: t.clientX, y: t.clientY };
+  };
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!swipeTouchRef.current) return;
+    const t = e.changedTouches[0];
+    const dy = t.clientY - swipeTouchRef.current.y;
+    swipeTouchRef.current = null;
+    // Swipe up ≥ 50px anywhere on the panel dismisses it
+    if (dy < -50) onClose();
+  };
+
   return (
     <motion.div
       initial={{ y: '-100%' }}
       animate={{ y: 0 }}
       exit={{ y: '-100%' }}
       transition={{ type: 'spring', stiffness: 300, damping: 35 }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
       style={{
         position: 'fixed',
         inset: 0,
