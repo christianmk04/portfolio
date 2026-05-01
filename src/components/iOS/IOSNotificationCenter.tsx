@@ -373,6 +373,7 @@ function LeetCodeWidget() {
 export default function IOSNotificationCenter({ onClose }: Props) {
   const [now, setNow] = useState(new Date());
   const swipeTouchRef = useRef<{ x: number; y: number } | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(0);
   // iframeAutoplay controls the ?autoplay= param baked into the src.
@@ -426,6 +427,12 @@ export default function IOSNotificationCenter({ onClose }: Props) {
     if (wasPlaying) setTimeout(() => setIsPlaying(true), 600);
   };
 
+  const isScrolledToBottom = () => {
+    const el = containerRef.current;
+    if (!el) return false;
+    return el.scrollTop + el.clientHeight >= el.scrollHeight - 24;
+  };
+
   const handleTouchStart = (e: React.TouchEvent) => {
     const t = e.touches[0];
     swipeTouchRef.current = { x: t.clientX, y: t.clientY };
@@ -435,12 +442,13 @@ export default function IOSNotificationCenter({ onClose }: Props) {
     const t = e.changedTouches[0];
     const dy = t.clientY - swipeTouchRef.current.y;
     swipeTouchRef.current = null;
-    // Swipe up ≥ 50px anywhere on the panel dismisses it
-    if (dy < -50) onClose();
+    // Only dismiss when swiped up AND already scrolled to the bottom
+    if (dy < -50 && isScrolledToBottom()) onClose();
   };
 
   return (
     <motion.div
+      ref={containerRef}
       initial={{ y: '-100%' }}
       animate={{ y: 0 }}
       exit={{ y: '-100%' }}
